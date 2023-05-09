@@ -15,13 +15,16 @@ public class Worker : BackgroundService
     {
         int i = 0;
         Console.WriteLine("Drinking coffee ");
+        DateTime localNow = DateTime.Now;
+        DateTime start = DateTime.Today.AddHours(6); // 6am
+        DateTime end = DateTime.Today.AddHours(23); // 11pm
+
+        Console.WriteLine("Start: {0}", start.ToLocalTime());
+        Console.WriteLine("End: {0}", end.ToLocalTime());
         while (!stoppingToken.IsCancellationRequested)
         {
             await _timer.WaitForNextTickAsync(stoppingToken).ConfigureAwait(false);
 
-            DateTime localNow = DateTime.Now;
-            DateTime start = DateTime.Today.AddHours(6); // 6am
-            DateTime end = DateTime.Today.AddHours(23); // 11pm
             // During the day
             if (localNow >= start && localNow <= end)
             {
