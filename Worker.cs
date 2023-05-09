@@ -13,6 +13,8 @@ public class Worker : BackgroundService
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
+        int i = 0;
+        Console.WriteLine("Drinking coffee ");
         while (!stoppingToken.IsCancellationRequested)
         {
             await _timer.WaitForNextTickAsync(stoppingToken).ConfigureAwait(false);
@@ -24,12 +26,25 @@ public class Worker : BackgroundService
             if (localNow >= start && localNow <= end)
             {
                 bool result = Native.NoSleep();
-                _logger.LogInformation("Drink some coffee. Result: {result}", result);
+                _logger.LogTrace("Drink some coffee. Result: {result}", result);
             }
             else
             {
                 bool result = Native.OkayToSleep();
-                _logger.LogInformation("Take some sleep. Result: {result}", result);
+                _logger.LogTrace("Take some sleep. Result: {result}", result);
+            }
+
+            if (i++ >= 1000)
+            {
+                i = 0;
+            }
+            if (i == 1)
+            {
+                Console.Write(".");
+            }
+            if (i % 20 == 0)
+            {
+                Console.WriteLine();
             }
         }
     }
